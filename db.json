@@ -11,16 +11,6 @@
       "completed": false
     },
     {
-      "id": 3,
-      "title": "Listen to Eric talk about how much he loves Fortnite",
-      "completed": false
-    },
-    {
-      "id": 5,
-      "title": "Convince Eric that there are better games to play",
-      "completed": false
-    },
-    {
       "id": 6,
       "title": "Educate Eric that Overwatch is better than Fortnite",
       "completed": false
@@ -39,6 +29,11 @@
       "id": 10,
       "title": "Ignore Eric's request to play Fortnite with him",
       "completed": true
+    },
+    {
+      "title": "a new one",
+      "completed": false,
+      "id": 11
     }
   ]
 }

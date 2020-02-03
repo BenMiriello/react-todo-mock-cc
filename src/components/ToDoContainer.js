@@ -26,7 +26,18 @@ export default class ToDoContainer extends Component {
   }
 
   controlSubmit = () => {
-    console.log('haha u submitted me' + this.state.inputValue)
+    // console.log('haha u submitted me' + this.state.inputValue)
+    fetch(`http://localhost:3000/todos`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({title: this.state.inputValue, completed: false})
+    })
+    // .then(r => r.json())
+    // .then(newToDo => )
+    // ...
   }
 
   completedToDos = () => {
@@ -61,7 +72,7 @@ export default class ToDoContainer extends Component {
       .then(r => r.json())
       .then(todos => this.setState({todos}))
     )
-    // not working quite right but i'll get back to fix it after doing delete
+    
   }
 
   deleteToDo = (todo) => {
@@ -78,6 +89,11 @@ export default class ToDoContainer extends Component {
       .then(r => r.json())
       .then(todos => this.setState({todos}))
     )
+    // .then(todoFromDB => {
+    //   delete this.state.todos.find(todo => todo.id === todoFromDB.id)
+    //   // delete todoToDelete
+    //   this.setState(this.state)
+    // })
   }
 
 handleOnChange = (e) => {
