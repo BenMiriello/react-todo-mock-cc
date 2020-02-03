@@ -11,22 +11,14 @@ export default class ToDoContainer extends Component {
     searchTerm: ""
   }
 
-  controlForm = (e) => {
-    this.setState({inputValue: e.target.value}
-      // , () => {console.log(this.state.inputValue)}
-    )
-  }
-
   componentDidMount(){
     fetch('http://localhost:3000/todos')
     .then(r => r.json())
     .then(todos => this.setState({todos})
-      // , () => {console.log(this.state)}
     )
   }
 
   controlSubmit = () => {
-    // console.log('haha u submitted me' + this.state.inputValue)
     fetch(`http://localhost:3000/todos`, {
       method: "POST",
       headers: {
@@ -35,31 +27,17 @@ export default class ToDoContainer extends Component {
       },
       body: JSON.stringify({title: this.state.inputValue, completed: false})
     })
-    // .then(r => r.json())
-    // .then(newToDo => )
-    // ...
+    // .then(this.fetchAllToDos)
+    .then(r => r.json())
+    .then(newToDo => {
+      let todoArr = [...this.state.todos, newToDo]
+      this.setState({
+        todos: todoArr
+      })
+    })
   }
 
-  completedToDos = () => {
-    return this.state.todos.filter(todo => todo.completed)
-  }
-
-  incompleteToDos = () => {
-    let allIncomplete = this.state.todos.filter(todo => !todo.completed)
-    // console.log('allincomplete', allIncomplete)
-    return allIncomplete.filter(todo => todo.title.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
-  }
-
-  controlStatus = (todo) => {
-    // console.log('changing status', title)
-
-    // let todoToChangeStatus = this.state.todos.find(todo => todo.title === title)
-    // console.log(todoToChangeStatus)
-
-    // return this.state.todos.find(todo => todo.title === title)
-    // todoToChangeStatus.completed = !todoToChangeStatus.completed
-
-    // console.log(todo)
+  changeStatus = (todo) => {
     fetch(`http://localhost:3000/todos/${todo.id}`, {
       method: "PATCH",
       headers: {
@@ -68,47 +46,61 @@ export default class ToDoContainer extends Component {
       },
       body: JSON.stringify({completed: !todo.completed})
     })
-    .then(fetch('http://localhost:3000/todos')
-      .then(r => r.json())
-      .then(todos => this.setState({todos}))
-    )
-    
+    // .then(this.fetchAllToDos)
+    .then(r => r.json())
+    .then(updatedToDo => {
+      let todoArr = [...this.state.todos, updatedToDo]
+      this.setState({
+        todos: todoArr
+      })
+    })
   }
 
   deleteToDo = (todo) => {
     fetch(`http://localhost:3000/todos/${todo.id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify({completed: !todo.completed})
+      method: "DELETE"
     })
-    .then(r => r.json())
-    .then(fetch('http://localhost:3000/todos')
-      .then(r => r.json())
-      .then(todos => this.setState({todos}))
-    )
-    // .then(todoFromDB => {
-    //   delete this.state.todos.find(todo => todo.id === todoFromDB.id)
-    //   // delete todoToDelete
-    //   this.setState(this.state)
-    // })
+      .then(this.fetchAllToDos)
+      // .then(r => r.json())
+      // .then(todoFromDB => {
+      //   delete this.state.todos.find(todo => todo.id === todoFromDB.id)
+      //   // delete todoToDelete
+      //   this.setState(this.state)
+      // })
   }
 
-handleOnChange = (e) => {
-  // console.log('haha u changed me')
-  // console.log(e.target.value)
-  this.setState({searchTerm: e.target.value})
-}
-  
+  fetchAllToDos = () => {
+    fetch('http://localhost:3000/todos')
+      .then(r => r.json())
+      .then(todos => this.setState({todos}, () => {console.log('state changed', this.state)} ))
+  }
+
+  controlForm = (e) => {
+    this.setState({inputValue: e.target.value}
+    )
+  }
+
+  completedToDos = () => {
+    return this.state.todos.filter(todo => todo.completed)
+  }
+
+  incompleteToDos = () => {
+    let allIncomplete = this.state.todos.filter(todo => !todo.completed)
+    return allIncomplete.filter(todo => todo.title.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
+  }
+
+  handleOnChange = (e) => {
+    this.setState({searchTerm: e.target.value})
+  }
+
   render() {
     return (
       <div id="todo-container">
         <NewToDoForm controlForm={this.controlForm} inputValue={this.state.inputValue} controlSubmit={this.controlSubmit} />
-        <CompletedContainer completedToDos={this.completedToDos()} controlStatus={this.controlStatus} deleteToDo={this.deleteToDo} />
-        <IncompleteContainer searchTerm={this.state.searchTerm} handleOnChange={this.handleOnChange} incompleteToDos={this.incompleteToDos()} controlStatus={this.controlStatus} deleteToDo={this.deleteToDo} />
+        <CompletedContainer completedToDos={this.completedToDos()} changeStatus={this.changeStatus} deleteToDo={this.deleteToDo} />
+        <IncompleteContainer searchTerm={this.state.searchTerm} handleOnChange={this.handleOnChange} incompleteToDos={this.incompleteToDos()} changeStatus={this.changeStatus} deleteToDo={this.deleteToDo} />
       </div>
     );
   }
 }
+

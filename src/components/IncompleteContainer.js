@@ -16,7 +16,7 @@ export default class IncompleteContainer extends Component {
     // To determine which to filter, find out which ToDo title INCLUDES the search term typed.
 
   renderIncompleteToDos = () => {
-    return this.props.incompleteToDos.map(todo => <ToDoCard todo={todo} controlStatus={this.props.controlStatus} deleteToDo={this.props.deleteToDo} />)
+    return this.props.incompleteToDos.map(todo => <ToDoCard key={`${todo.id}${todo.title}`} todo={todo} changeStatus={this.props.changeStatus} deleteToDo={this.props.deleteToDo} />)
   }
 
   render() {

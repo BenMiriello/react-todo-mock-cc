@@ -1,10 +1,10 @@
 import React from 'react'
 
 const ToDoCard = (props) => {
-  console.log(props)
+  // console.log(props)
 
   let handleStatusClick = () => {
-    props.controlStatus(props.todo)
+    props.changeStatus(props.todo)
   }
 
   return (

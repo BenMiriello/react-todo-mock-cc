@@ -5,7 +5,7 @@ const CompletedContainer = (props) => {
     // console.log('completed container: ', props)
 
     let renderCompletedToDos = () => {
-        return props.completedToDos.map(todo => <ToDoCard todo={todo} controlStatus={props.controlStatus} deleteToDo={props.deleteToDo} />)
+        return props.completedToDos.map(todo => <ToDoCard key={`${todo.id}${todo.title}`} todo={todo} changeStatus={props.changeStatus} deleteToDo={props.deleteToDo} />)
     }
 
     return (

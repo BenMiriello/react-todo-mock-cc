@@ -1,16 +1,6 @@
 {
   "todos": [
     {
-      "id": 1,
-      "title": "Eat",
-      "completed": true
-    },
-    {
-      "id": 2,
-      "title": "Sleep",
-      "completed": false
-    },
-    {
       "id": 6,
       "title": "Educate Eric that Overwatch is better than Fortnite",
       "completed": false
@@ -18,22 +8,32 @@
     {
       "id": 7,
       "title": "Lecture",
-      "completed": false
-    },
-    {
-      "id": 8,
-      "title": "Code",
       "completed": true
     },
     {
       "id": 10,
       "title": "Ignore Eric's request to play Fortnite with him",
-      "completed": true
+      "completed": false
     },
     {
-      "title": "a new one",
+      "title": "Play Lots of Fortnite",
+      "completed": true,
+      "id": 12
+    },
+    {
+      "title": "Code",
       "completed": false,
-      "id": 11
+      "id": 13
+    },
+    {
+      "title": "Fortnite",
+      "completed": true,
+      "id": 14
+    },
+    {
+      "title": "Do anything But Play Fortnite",
+      "completed": false,
+      "id": 15
     }
   ]
 }
