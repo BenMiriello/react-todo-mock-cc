@@ -7,7 +7,8 @@ export default class ToDoContainer extends Component {
 
   state={
     inputValue: "",
-    todos: []
+    todos: [],
+    searchTerm: ""
   }
 
   controlForm = (e) => {
@@ -33,15 +34,64 @@ export default class ToDoContainer extends Component {
   }
 
   incompleteToDos = () => {
-    return this.state.todos.filter(todo => !todo.completed)
+    let allIncomplete = this.state.todos.filter(todo => !todo.completed)
+    // console.log('allincomplete', allIncomplete)
+    return allIncomplete.filter(todo => todo.title.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
   }
+
+  controlStatus = (todo) => {
+    // console.log('changing status', title)
+
+    // let todoToChangeStatus = this.state.todos.find(todo => todo.title === title)
+    // console.log(todoToChangeStatus)
+
+    // return this.state.todos.find(todo => todo.title === title)
+    // todoToChangeStatus.completed = !todoToChangeStatus.completed
+
+    // console.log(todo)
+    fetch(`http://localhost:3000/todos/${todo.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({completed: !todo.completed})
+    })
+    .then(fetch('http://localhost:3000/todos')
+      .then(r => r.json())
+      .then(todos => this.setState({todos}))
+    )
+    // not working quite right but i'll get back to fix it after doing delete
+  }
+
+  deleteToDo = (todo) => {
+    fetch(`http://localhost:3000/todos/${todo.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({completed: !todo.completed})
+    })
+    .then(r => r.json())
+    .then(fetch('http://localhost:3000/todos')
+      .then(r => r.json())
+      .then(todos => this.setState({todos}))
+    )
+  }
+
+handleOnChange = (e) => {
+  // console.log('haha u changed me')
+  // console.log(e.target.value)
+  this.setState({searchTerm: e.target.value})
+}
   
   render() {
     return (
       <div id="todo-container">
         <NewToDoForm controlForm={this.controlForm} inputValue={this.state.inputValue} controlSubmit={this.controlSubmit} />
-        <CompletedContainer completedToDos={this.completedToDos()} />
-        <IncompleteContainer incompleteToDos={this.incompleteToDos()} />
+        <CompletedContainer completedToDos={this.completedToDos()} controlStatus={this.controlStatus} deleteToDo={this.deleteToDo} />
+        <IncompleteContainer searchTerm={this.state.searchTerm} handleOnChange={this.handleOnChange} incompleteToDos={this.incompleteToDos()} controlStatus={this.controlStatus} deleteToDo={this.deleteToDo} />
       </div>
     );
   }

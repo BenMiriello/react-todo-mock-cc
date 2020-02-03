@@ -1,4 +1,4 @@
-// import SearchBarComponent from './SearchBarComponent'
+import SearchBarComponent from './SearchBarComponent'
 import ToDoCard from './ToDoCard'
 import React, { Component } from 'react';
 
@@ -7,22 +7,16 @@ export default class IncompleteContainer extends Component {
     // When implementing the search bar, consider implementing state here to make it dynamic. 
     // i.e everytime you type in the input field, the ToDos are immediately filtered
     
-    // state = {
-    //     searchTerm: ""
-    // }
-
+    
     // When implementing the search bar, consider implementing a function that handles setState and pass this function down to 
     // SearchBarComponent
-  
-    // handleOnChange = () => {
-        
-    // }
+    
 
     // When implementing the search term, consider implementing a function that FILTERs the todos.
     // To determine which to filter, find out which ToDo title INCLUDES the search term typed.
 
   renderIncompleteToDos = () => {
-    return this.props.incompleteToDos.map(todo => <ToDoCard todo={todo} />)
+    return this.props.incompleteToDos.map(todo => <ToDoCard todo={todo} controlStatus={this.props.controlStatus} deleteToDo={this.props.deleteToDo} />)
   }
 
   render() {
@@ -30,7 +24,7 @@ export default class IncompleteContainer extends Component {
     return (
         <div>
             <h1>Incomplete Todos</h1>
-            {/* <SearchBarComponent handleOnChange={this.handleOnChange}/> */}
+            <SearchBarComponent searchTerm={this.props.searchTerm} handleOnChange={this.props.handleOnChange}/>
             {/* Render ToDo Card for each ToDo */} 
             {/* Which Array method can you use? */}
             {this.renderIncompleteToDos()}

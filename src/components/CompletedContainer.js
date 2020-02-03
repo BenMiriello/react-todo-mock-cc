@@ -2,10 +2,10 @@ import React from 'react'
 import ToDoCard from './ToDoCard'
 
 const CompletedContainer = (props) => {
-    console.log('completed container: ', props)
+    // console.log('completed container: ', props)
 
     let renderCompletedToDos = () => {
-        return props.completedToDos.map(todo => <ToDoCard todo={todo} />)
+        return props.completedToDos.map(todo => <ToDoCard todo={todo} controlStatus={props.controlStatus} deleteToDo={props.deleteToDo} />)
     }
 
     return (
