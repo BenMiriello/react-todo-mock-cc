@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CompletedContainer from './CompletedContainer'
-import IncompleteContainer from './IncompleteContainer'
+import ToDoSubContainer from './ToDoSubContainer'
 import NewToDoForm from './NewToDoForm'
 
 export default class ToDoContainer extends Component {
@@ -49,7 +49,9 @@ export default class ToDoContainer extends Component {
     // .then(this.fetchAllToDos)
     .then(r => r.json())
     .then(updatedToDo => {
-      let todoArr = [...this.state.todos, updatedToDo]
+      let theIndex = this.state.todos.findIndex(todo => todo.id === updatedToDo.id)
+      let todoArr = this.state.todos
+      todoArr[theIndex] = updatedToDo
       this.setState({
         todos: todoArr
       })
@@ -60,19 +62,19 @@ export default class ToDoContainer extends Component {
     fetch(`http://localhost:3000/todos/${todo.id}`, {
       method: "DELETE"
     })
-      .then(this.fetchAllToDos)
-      // .then(r => r.json())
-      // .then(todoFromDB => {
-      //   delete this.state.todos.find(todo => todo.id === todoFromDB.id)
-      //   // delete todoToDelete
-      //   this.setState(this.state)
-      // })
+      // not getting object back because of db.json server
+      .then(() => {
+        const newArray = this.state.todos.filter(existingTodo => todo.id !== existingTodo.id)
+        this.setState({
+          todos: newArray
+        })
+      })
   }
 
   fetchAllToDos = () => {
     fetch('http://localhost:3000/todos')
       .then(r => r.json())
-      .then(todos => this.setState({todos}, () => {console.log('state changed', this.state)} ))
+      .then(todos => this.setState({todos}))
   }
 
   controlForm = (e) => {
@@ -97,8 +99,8 @@ export default class ToDoContainer extends Component {
     return (
       <div id="todo-container">
         <NewToDoForm controlForm={this.controlForm} inputValue={this.state.inputValue} controlSubmit={this.controlSubmit} />
-        <CompletedContainer completedToDos={this.completedToDos()} changeStatus={this.changeStatus} deleteToDo={this.deleteToDo} />
-        <IncompleteContainer searchTerm={this.state.searchTerm} handleOnChange={this.handleOnChange} incompleteToDos={this.incompleteToDos()} changeStatus={this.changeStatus} deleteToDo={this.deleteToDo} />
+        <ToDoSubContainer completeContainer={true} todos={this.completedToDos()} changeStatus={this.changeStatus} deleteToDo={this.deleteToDo} />
+        <ToDoSubContainer completeContainer={false} searchTerm={this.state.searchTerm} handleOnChange={this.handleOnChange} todos={this.incompleteToDos()} changeStatus={this.changeStatus} deleteToDo={this.deleteToDo} />
       </div>
     );
   }
