@@ -1,4 +1,4 @@
-import SearchBarComponent from './SearchBarComponent'
+// import SearchBarComponent from './SearchBarComponent'
 import ToDoCard from './ToDoCard'
 import React, { Component } from 'react';
 
@@ -21,13 +21,19 @@ export default class IncompleteContainer extends Component {
     // When implementing the search term, consider implementing a function that FILTERs the todos.
     // To determine which to filter, find out which ToDo title INCLUDES the search term typed.
 
+  renderIncompleteToDos = () => {
+    return this.props.incompleteToDos.map(todo => <ToDoCard todo={todo} />)
+  }
+
   render() {
+    // console.log(this.props)
     return (
         <div>
             <h1>Incomplete Todos</h1>
             {/* <SearchBarComponent handleOnChange={this.handleOnChange}/> */}
             {/* Render ToDo Card for each ToDo */} 
             {/* Which Array method can you use? */}
+            {this.renderIncompleteToDos()}
         </div>
     )
   }
